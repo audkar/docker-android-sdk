@@ -1,7 +1,7 @@
 FROM openjdk:8-jdk
 MAINTAINER Audrius Karosevicius <audrius.karosevicius@gmail.com>
 
-ENV SDK_VERSION=r25.2.3
+ENV SDK_VERSION=r25.2.5
 ENV ANDROID_HOME=/opt/android-sdk
 
 RUN apt-get update -qq \
