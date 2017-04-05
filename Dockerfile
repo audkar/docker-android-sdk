@@ -1,12 +1,18 @@
-FROM openjdk:8-jdk
+FROM centos:7
 MAINTAINER Audrius Karosevicius <audrius.karosevicius@gmail.com>
 
 ENV SDK_VERSION=r25.2.5
-ENV ANDROID_HOME=/opt/android-sdk
+ENV ANDROID_HOME=/opt/android-sdk \
+    JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
 
-RUN apt-get update -qq \
-    && apt-get install -y --no-install-recommends wget \
-    && wget -q https://dl.google.com/android/repository/tools_"$SDK_VERSION"-linux.zip \
+RUN yum -y install wget unzip \
+    && yum -y remove git \
+    && yum -y install epel-release \
+    && yum -y install https://centos7.iuscommunity.org/ius-release.rpm \
+    && yum -y install git2u java-1.8.0-openjdk-devel \
+    && yum clean all
+
+RUN wget -q https://dl.google.com/android/repository/tools_"$SDK_VERSION"-linux.zip \
     && unzip -qq tools_"$SDK_VERSION"-linux.zip -d /opt/android-sdk \
     && rm tools_"$SDK_VERSION"-linux.zip \
     && mkdir "$ANDROID_HOME/licenses" || true \
