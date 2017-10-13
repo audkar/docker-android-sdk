@@ -12,10 +12,11 @@ RUN yum -y install wget unzip \
     && yum clean all
 
 #Releases https://dl.google.com/android/repository/repository2-1.xml
-RUN SDK_BUILD="3859397" SDK_CHECKSUM="7eab0ada7ff28487e1b340cc3d866e70bcb4286e" \
+RUN SDK_BUILD="4333796" SDK_CHECKSUM="8c7c28554a32318461802c1291d76fccfafde054" \
     && wget -q https://dl.google.com/android/repository/sdk-tools-linux-"$SDK_BUILD".zip \
     && echo "$SDK_CHECKSUM *sdk-tools-linux-$SDK_BUILD.zip" | sha1sum -c - \
     && unzip -qq sdk-tools-linux-"$SDK_BUILD".zip -d /opt/android-sdk \
     && rm sdk-tools-linux-"$SDK_BUILD".zip \
     && yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses \
     && chmod -R 777 $ANDROID_HOME
+
