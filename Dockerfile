@@ -5,7 +5,7 @@ ENV ANDROID_HOME=/opt/android-sdk
 
 RUN apk update \
     && apk upgrade \
-    && apk add --no-cache bash wget git unzip
+    && apk add --no-cache bash wget git unzip curl
 
 #Releases https://dl.google.com/android/repository/repository2-1.xml
 RUN SDK_BUILD="4333796" SDK_CHECKSUM="8c7c28554a32318461802c1291d76fccfafde054" \
