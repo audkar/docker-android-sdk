@@ -1,7 +1,8 @@
 FROM frolvlad/alpine-oraclejdk8:latest
 MAINTAINER Audrius Karosevicius <audrius.karosevicius@gmail.com>
 
-ENV ANDROID_HOME=/opt/android-sdk 
+ENV ANDROID_HOME /opt/android-sdk
+ENV PATH "${ANDROID_HOME}/tools/bin:/opt/gtk/bin:${PATH}"
 
 RUN apk update \
     && apk upgrade \
@@ -14,6 +15,7 @@ RUN SDK_BUILD="4333796" SDK_CHECKSUM="8c7c28554a32318461802c1291d76fccfafde054" 
     && mkdir /opt \
     && unzip -qq sdk-tools-linux-"$SDK_BUILD".zip -d /opt/android-sdk \
     && rm sdk-tools-linux-"$SDK_BUILD".zip \
-    && yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses \
-    && chmod -R 777 $ANDROID_HOME
+    && yes | sdkmanager --licenses \
+    && chmod -R 777 $ANDROID_HOME \
+    && touch /root/.android/repositories.cfg
 
