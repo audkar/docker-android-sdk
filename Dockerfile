@@ -16,6 +16,7 @@ RUN SDK_BUILD="4333796" SDK_CHECKSUM="8c7c28554a32318461802c1291d76fccfafde054" 
     && unzip -qq sdk-tools-linux-"$SDK_BUILD".zip -d /opt/android-sdk \
     && rm sdk-tools-linux-"$SDK_BUILD".zip \
     && yes | sdkmanager --licenses \
+    && yes | sdkmanager "build-tools;28.0.3" \
     && chmod -R 777 $ANDROID_HOME \
     && touch /root/.android/repositories.cfg
 
