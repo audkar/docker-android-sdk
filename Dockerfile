@@ -4,7 +4,7 @@ MAINTAINER Audrius Karosevicius <audrius.karosevicius@gmail.com>
 ENV ANDROID_HOME /opt/android-sdk
 ENV PATH "${ANDROID_HOME}/tools/bin:/opt/gtk/bin:${PATH}"
 
-RUN GLIBC_VERSION="2.28-r0" \
+RUN GLIBC_VERSION="2.29-r0" \
     && apk update \
     && apk upgrade \
     && apk add --no-cache --virtual=.build-dependencies bash wget git unzip curl \
@@ -19,7 +19,7 @@ RUN GLIBC_VERSION="2.28-r0" \
 RUN SDK_BUILD="4333796" SDK_CHECKSUM="8c7c28554a32318461802c1291d76fccfafde054" \
     && wget -q https://dl.google.com/android/repository/sdk-tools-linux-"$SDK_BUILD".zip \
     && echo "$SDK_CHECKSUM *sdk-tools-linux-$SDK_BUILD.zip" | sha1sum -c - \
-    && mkdir /opt \
+    && mkdir -p /opt \
     && unzip -qq sdk-tools-linux-"$SDK_BUILD".zip -d /opt/android-sdk \
     && rm sdk-tools-linux-"$SDK_BUILD".zip \
     && yes | sdkmanager --licenses \
