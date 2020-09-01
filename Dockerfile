@@ -1,8 +1,8 @@
-FROM openjdk:8-jdk-alpine
+FROM openjdk:14-jdk-alpine
 MAINTAINER Audrius Karosevicius <audrius.karosevicius@gmail.com>
 
 ENV ANDROID_HOME /opt/android-sdk
-ENV PATH "${ANDROID_HOME}/tools/bin:/opt/gtk/bin:${PATH}"
+ENV PATH "${ANDROID_HOME}/cmdline-tools/tools/bin:/opt/gtk/bin:${PATH}"
 
 RUN apk update \
     && apk upgrade \
@@ -15,7 +15,7 @@ ENV LANG=C.UTF-8
 # Here we install GNU libc (aka glibc) and set C.UTF-8 locale as default.
 
 RUN ALPINE_GLIBC_BASE_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases/download" && \
-    ALPINE_GLIBC_PACKAGE_VERSION="2.30-r0" && \
+    ALPINE_GLIBC_PACKAGE_VERSION="2.32-r0" && \
     ALPINE_GLIBC_BASE_PACKAGE_FILENAME="glibc-$ALPINE_GLIBC_PACKAGE_VERSION.apk" && \
     ALPINE_GLIBC_BIN_PACKAGE_FILENAME="glibc-bin-$ALPINE_GLIBC_PACKAGE_VERSION.apk" && \
     ALPINE_GLIBC_I18N_PACKAGE_FILENAME="glibc-i18n-$ALPINE_GLIBC_PACKAGE_VERSION.apk" && \
@@ -52,14 +52,15 @@ RUN ALPINE_GLIBC_BASE_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases
         "$ALPINE_GLIBC_I18N_PACKAGE_FILENAME"
 
 #Releases https://dl.google.com/android/repository/repository2-1.xml
-RUN SDK_BUILD="4333796" SDK_CHECKSUM="8c7c28554a32318461802c1291d76fccfafde054" \
-    && wget -q https://dl.google.com/android/repository/sdk-tools-linux-"$SDK_BUILD".zip \
-    && echo "$SDK_CHECKSUM *sdk-tools-linux-$SDK_BUILD.zip" | sha1sum -c - \
-    && mkdir -p /opt/android-sdk \
-    && unzip -qq sdk-tools-linux-"$SDK_BUILD".zip -d /opt/android-sdk \
-    && rm sdk-tools-linux-"$SDK_BUILD".zip \
+#Need specific path for tools https://issuetracker.google.com/issues/143335476
+RUN SDK_BUILD="6609375" SDK_CHECKSUM="89f308315e041c93a37a79e0627c47f21d5c5edbe5e80ea8dc0aac8a649e0e92" \
+    && wget -q -O android_sdk.zip https://dl.google.com/android/repository/commandlinetools-linux-"$SDK_BUILD"_latest.zip \
+    && echo "$SDK_CHECKSUM  android_sdk.zip" | sha256sum -c \
+    && mkdir -p /opt/android-sdk/cmdline-tools \ 
+    && unzip -qq android_sdk.zip -d /opt/android-sdk/cmdline-tools \
+    && rm android_sdk.zip \
     && yes | sdkmanager --licenses \
-    && yes | sdkmanager "build-tools;29.0.2" \
+    && yes | sdkmanager "build-tools;30.0.2" \
     && chmod -R 777 $ANDROID_HOME \
     && touch /root/.android/repositories.cfg
 
