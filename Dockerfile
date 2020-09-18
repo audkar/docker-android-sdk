@@ -6,7 +6,7 @@ ENV PATH "${ANDROID_HOME}/cmdline-tools/tools/bin:/opt/gtk/bin:${PATH}"
 
 RUN apk update \
     && apk upgrade \
-    && apk add --no-cache --virtual=.build-dependencies bash wget git unzip curl \
+    && apk add --no-cache --virtual=.build-dependencies bash wget git unzip curl libstdc++ \
     && rm -rf /tmp/* \
     && rm -rf /var/cache/apk/*
 
