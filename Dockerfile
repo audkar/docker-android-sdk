@@ -1,4 +1,4 @@
-FROM openjdk:14-jdk-alpine
+FROM openjdk:17-jdk-alpine
 MAINTAINER Audrius Karosevicius <audrius.karosevicius@gmail.com>
 
 ENV ANDROID_HOME /opt/android-sdk
@@ -17,7 +17,7 @@ ENTRYPOINT /bin/bash
 # Here we install GNU libc (aka glibc) and set C.UTF-8 locale as default.
 
 RUN ALPINE_GLIBC_BASE_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases/download" && \
-    ALPINE_GLIBC_PACKAGE_VERSION="2.34-r0" && \
+    ALPINE_GLIBC_PACKAGE_VERSION="2.35-r1" && \
     ALPINE_GLIBC_BASE_PACKAGE_FILENAME="glibc-$ALPINE_GLIBC_PACKAGE_VERSION.apk" && \
     ALPINE_GLIBC_BIN_PACKAGE_FILENAME="glibc-bin-$ALPINE_GLIBC_PACKAGE_VERSION.apk" && \
     ALPINE_GLIBC_I18N_PACKAGE_FILENAME="glibc-i18n-$ALPINE_GLIBC_PACKAGE_VERSION.apk" && \
@@ -55,14 +55,14 @@ RUN ALPINE_GLIBC_BASE_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases
 
 #Releases https://dl.google.com/android/repository/repository2-1.xml
 #Need specific path for tools https://issuetracker.google.com/issues/143335476
-RUN SDK_BUILD="7583922" SDK_CHECKSUM="124f2d5115eee365df6cf3228ffbca6fc3911d16f8025bebd5b1c6e2fcfa7faf" \
+RUN SDK_BUILD="10406996" SDK_CHECKSUM="87b485c7283cba69e41c10f05bf832d2fd691552" \
     && wget -q -O android_sdk.zip https://dl.google.com/android/repository/commandlinetools-linux-"$SDK_BUILD"_latest.zip \
-    && echo "$SDK_CHECKSUM  android_sdk.zip" | sha256sum -c \
+    && echo "$SDK_CHECKSUM  android_sdk.zip" | sha1sum -c \
     && mkdir -p /opt/android-sdk/cmdline-tools \ 
     && unzip -qq android_sdk.zip -d /opt/android-sdk/cmdline-tools \
     && rm android_sdk.zip \
     && yes | sdkmanager --licenses \
-    && yes | sdkmanager "build-tools;31.0.0" \
+    && yes | sdkmanager "build-tools;34.0.0" \
     && chmod -R 777 $ANDROID_HOME \
     && touch /root/.android/repositories.cfg
 
